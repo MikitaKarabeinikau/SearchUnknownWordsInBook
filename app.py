@@ -10,17 +10,29 @@ import os
 '''
 
 
+def wordTransferBetweenTwoFiles(frm, to, word):
+        meta = MetaVacFiles()
+        oldVac = get_vacabulary_list(frm)
+        try:
+            oldVac.remove(word)
+        except Exception as e:
+            print(e)
+        createNewWordsFile(oldVac,frm)
+        add_new_words(to,word)
+        meta.updateSizes()
+        meta.sizeOfFiles()
+
+
 
 class MetaVacFiles():
     def __init__(self) -> None:
-        self.known = str(os.getcwd())+'\\known.txt'
-        self.unknown = str(os.getcwd())+'\\unknown.txt'
-        self.trash = str(os.getcwd())+'\\tash.txt'
-        self.unchecked = str(os.getcwd())+'\\words.txt'
+        self.known = str(os.getcwd())+'\\files\\known.txt'
+        self.unknown = str(os.getcwd())+'\\files\\unknown.txt'
+        self.trash = str(os.getcwd())+'\\files\\tash.txt'
+        self.unchecked = str(os.getcwd())+'\\files\\words_1.txt'
         self.files = [self.known,self.unknown,self.trash,self.unchecked]
         self.checkOnExistens()
         self.sizes = self.get_sizes()
-        self.resetFiles()
 
     def resetFiles(self):
         for i in self.files:
@@ -32,7 +44,6 @@ class MetaVacFiles():
                 with open(i,'w') as file:
                     file.write('') 
         self.sizeOfFiles()
-
 
 
     def checkOnExistens(self):

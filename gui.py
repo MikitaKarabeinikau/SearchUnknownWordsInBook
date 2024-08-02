@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import functionality as fw
+import functionality
+from app import MetaVacFiles,wordTransferBetweenTwoFiles
+import random
 
 '''
     TODO:
@@ -75,29 +78,49 @@ if __name__ == "__main__":
     # root.mainloop()
     # btn = ttk.Button(frm)
     # print(btn.configure.keys())
-    cnt = 0
-    def next_word():
-            cnt+=1
+    # cnt = 0
+    # def next_word():
+    #         cnt+=1
         
         
-    window = tk.Tk()
+    # window = tk.Tk()
 
-    frameright =tk.Frame(master=window,width=200,height=500)
-    frameright.pack(fill=tk.BOTH,side=tk.RIGHT,expand=True)
+    # frameright =tk.Frame(master=window,width=200,height=500)
+    # frameright.pack(fill=tk.BOTH,side=tk.RIGHT,expand=True)
     
-    frameleft =tk.Frame(master=window,width=200,height=500,bg="blue")
-    frameleft.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
+    # frameleft =tk.Frame(master=window,width=200,height=500,bg="blue")
+    # frameleft.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
 
-    framemidle =tk.Frame(master=window,width=500,height=500,bg="red")
-    framemidle.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
+    # framemidle =tk.Frame(master=window,width=500,height=500,bg="red")
+    # framemidle.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
 
-    btn = tk.Button(master=frameright,text="right",command=next_word)
-    btn.pack()
+    # btn = tk.Button(master=frameright,text="right",command=next_word)
+    # btn.pack()
     
-    btn.bind("Next Word",next_word)
-    arr = fw.get_vacabulary_list()
+    # btn.bind("Next Word",next_word)
+    # arr = fw.get_vacabulary_list()
 
-    lbl = tk.Label(master=framemidle,text=arr[cnt])
-    lbl.pack()
+    # lbl = tk.Label(master=framemidle,text=arr[cnt])
+    # lbl.pack()
 
-    window.mainloop()
+    # window.mainloop()
+
+    root = tk.Tk()
+    root.geometry("300x300")
+    meta = MetaVacFiles()
+    # functionality.fillWordsBaseIfItEmpty()
+    words = functionality.get_vacabulary_list('words_1.txt')
+    randWord = random.choice(words)
+
+    l = tk.Label(root, text=randWord)
+    b1 = tk.Button(root, text = "Known",command=wordTransferBetweenTwoFiles(meta.unchecked,meta.known,randWord))
+    b2 = tk.Button(root, text = "Unknown")
+    b3 = tk.Button(root, text = "Delete")
+    b4 = tk.Button(root, text = "EXIT", command=root.destroy)
+
+    l.pack()
+    b1.pack()
+    b2.pack()
+    b3.pack()
+    b4.pack()
+    tk.mainloop()

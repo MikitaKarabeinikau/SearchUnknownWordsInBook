@@ -10,13 +10,20 @@ import random
 
 '''
 
+def fillWordsBaseIfItEmpty():
+    if len(get_vacabulary_list('words.txt')):
+        createNewWordsFile(get_words_from_book(str(os.getcwd) + '\\books\\Window.txt'),'words.txt')
+    else: print(f"Words.txt is not empty!") 
+
+BOOK_WINDOW = str(os.getcwd())+'\\books\\Window.txt'
+LORUM = str(os.getcwd())+'\\books\\lorum.txt'
 TEST_FILE = str(os.getcwd() + '\\test.txt')
 
 
 def inVacabulary(file,word):
     return True if word in get_arr_of_words(file) else False
 
-def add_new_words(file,args):
+def add_new_words(file,*args):
     with open(file,'a') as f:
         for word in args:
             f.write(word + '\n')
@@ -54,7 +61,7 @@ BOOK_NAME = find_file("Window.txt",os.getcwd())
 def get_words_from_book(book):
     words = []
     puncs = ['\(','!','.',',','\'','\'','\"','?','`',';',':',"\[","\]",'/','•','-','—','“','”','\‘','\’','\(','\)',')','_','_','@','\(','\[','\(','\)','\]','#','*','%','$']
-    with open(BOOK_NAME,'r',encoding="utf8",errors='ignore') as book:
+    with open(book,'r',encoding="utf8",errors='ignore') as book:
         for row in book.readlines():
             if row == '\n': continue
             else:
@@ -116,8 +123,13 @@ def get_N_random_words(N,file):
         print(f'Random choosen words: {arr}')
     return arr
 
-if __name__ == "__main__":
-    add_new_words(str(os.getcwd()) + '\\words.txt',get_words_from_book(BOOK_NAME))
-    
-    
+def createNewWordsFile(words,newFileName):
+    with open(newFileName,'w') as f:
+        for i in words:
+            f.write(i + "\n")
 
+if __name__ == "__main__":
+    # add_new_words(str(os.getcwd()) + '\\words.txt',get_words_from_book(BOOK_NAME))
+    createNewWordsFile(get_words_from_book(BOOK_WINDOW),'words_1.txt')
+    # get_words_from_book(BOOK_WINDOW)
+    
