@@ -20,6 +20,8 @@ def wordTransferBetweenTwoFiles(frm, to, word):
         createNewWordsFile(oldVac,frm)
         add_new_words(to,word)
         meta.updateSizes()
+        
+        print(f'Word {word} was added to {to} and removed from {frm}')
         meta.sizeOfFiles()
 
 
@@ -38,12 +40,13 @@ class MetaVacFiles():
         for i in self.files:
             if i == self.unchecked:
                 words = get_words_from_book(str(os.getcwd() + '\\books\\The_Murders_in_the_Rue_Morgue-Edgar_Allan_Poe.txt'))
-                print
-                add_new_words(self.unchecked,words)
+                createNewWordsFile(words,self.unchecked)
             else:
                 with open(i,'w') as file:
                     file.write('') 
+        print(f'FILES WERE RESETED!')
         self.sizeOfFiles()
+
 
 
     def checkOnExistens(self):
@@ -58,8 +61,7 @@ class MetaVacFiles():
     def get_sizes(self):
         sizes = []
         for i in self.files:
-            with open(i,'r'):
-                sizes.append(len(get_vacabulary_list(i)))
+            sizes.append(len(get_vacabulary_list(i)))
         return sizes
     
     def sizeOfFiles(self):
@@ -71,35 +73,5 @@ class MetaVacFiles():
 
 if __name__ == "__main__":
     meta = MetaVacFiles()
+    meta.resetFiles()
     meta.sizeOfFiles()
-    while True:
-        meta.sizeOfFiles()
-        if keyboard.read_key() == 'esc':
-            break
-        # Take words
-        try:
-            vac_list = get_vacabulary_list(meta.unchecked)
-        except Exception as e:
-            print(e)
-        #Choose random word
-        word = random.choice(vac_list)
-        print(word)
-        #Do you know this words
-        #If know -> to Known else unknow 
-        newFilePass = {
-            "y" : add_new_words(meta.known,word),
-            "n" : add_new_words(meta.unknown,word),
-            "d" : add_new_words(meta.unchecked,word),
-            "r" : meta.resetFiles()
-        }
-        print(f'Do you know this word :{word}\n y/n/d  ')
-        if keyboard.read_key() in newFilePass.keys():
-
-            newFilePass[keyboard.read_key()]
-            #Update first file
-            vac_list.remove(word)
-            with open(meta.unchecked,'w') as file:
-                file.writelines(vac_list)
-            meta.updateSizes()
-            meta.sizeOfFiles()
-        else: print("Unknown command")

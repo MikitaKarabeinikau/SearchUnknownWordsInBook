@@ -4,6 +4,7 @@ import functionality as fw
 import functionality
 from app import MetaVacFiles,wordTransferBetweenTwoFiles
 import random
+import os 
 
 '''
     TODO:
@@ -47,80 +48,58 @@ import random
 
         SHOWVACABULARY:
 '''
+class Word:
+    def __init__(self,meta,word = None,words_set=functionality.get_vacabulary_list(str(os.getcwd())+'\\files\\words_1.txt')) -> None:
+        self.word = word
+        self.word_set = words_set
+        if self.word == None:
+            self.word = random.choice(self.word_set)
+            self.word_set.remove(self.word)
+        self.meta = meta
+
+    
 
 
-class App(tk.Frame):
-    def __init__(self,master):
-        super().__init__(master)
-        self.pack()
-
-        self.entrythingy = tk.Entry()
-        self.entrythingy.pack()
-
-        self.contents =  tk.StringVar()
-        self.contents.set("This is variable")
-        self.entrythingy["textvariable"] = self.contents
-
-        self.entrythingy.bind('<Key-Return>',self.print_contents)
-        
-
-    def print_contents(self,event):
-        print("Hi. The current entry content is:", self.contents.get())
-
-# root = Tk()
-# frm = ttk.Frame(root,padding=100)
-# frm.grid()
-# ttk.Label(frm, text="Hello World!").grid(column=0,row=0)
-# ttk.Button(frm,text="Quit", command=root.destroy).grid(column=1,row=0)
+    def nextWord(self):
+        self.word = random.choice(self.word_set)
+        self.word_set.remove(self.word)
+        meta.updateSizes()
 
 
 if __name__ == "__main__":
-    # root.mainloop()
-    # btn = ttk.Button(frm)
-    # print(btn.configure.keys())
-    # cnt = 0
-    # def next_word():
-    #         cnt+=1
+    
+    def print_contents(self,event):
+        print("Hi. The current entry content is:", self.contents.get())
+
+        
+    def changeLabel(root,word,l):
+        
+        l["text"] = word
+        l.pack()
         
         
-    # window = tk.Tk()
-
-    # frameright =tk.Frame(master=window,width=200,height=500)
-    # frameright.pack(fill=tk.BOTH,side=tk.RIGHT,expand=True)
     
-    # frameleft =tk.Frame(master=window,width=200,height=500,bg="blue")
-    # frameleft.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
-
-    # framemidle =tk.Frame(master=window,width=500,height=500,bg="red")
-    # framemidle.pack(fill=tk.BOTH,side=tk.LEFT,expand=True)
-
-    # btn = tk.Button(master=frameright,text="right",command=next_word)
-    # btn.pack()
-    
-    # btn.bind("Next Word",next_word)
-    # arr = fw.get_vacabulary_list()
-
-    # lbl = tk.Label(master=framemidle,text=arr[cnt])
-    # lbl.pack()
-
-    # window.mainloop()
 
     root = tk.Tk()
     root.geometry("300x300")
     meta = MetaVacFiles()
     # functionality.fillWordsBaseIfItEmpty()
-    words = functionality.get_vacabulary_list('words_1.txt')
-    randWord = random.choice(words)
+    word = Word(meta=meta)
 
-    l = tk.Label(root, text=randWord)
-    b1 = tk.Button(root, text = "Known",command=wordTransferBetweenTwoFiles(meta.unchecked,meta.known,randWord))
-    b2 = tk.Button(root, text = "Unknown")
-    b3 = tk.Button(root, text = "Delete")
+
+    l = tk.Label(root, text=word.word,font=100,padx=15,pady=15)
+    b1 = tk.Button(root, text = "Known",command=lambda:[wordTransferBetweenTwoFiles(meta.unchecked,meta.known,word.word),word.nextWord(),changeLabel(root,word.word,l)])
+    b2 = tk.Button(root, text = "Unknown",command=lambda:[wordTransferBetweenTwoFiles(meta.unchecked,meta.unknown,word.word),word.nextWord(),changeLabel(root,word.word,l)])
+    b3 = tk.Button(root, text = "Delete",command= lambda:[wordTransferBetweenTwoFiles(meta.unchecked,meta.trash,word.word),word.nextWord(),changeLabel(root,word.word,l)])
     b4 = tk.Button(root, text = "EXIT", command=root.destroy)
-
+    b5 = tk.Button(root, text = "RESET FILES",command=lambda:meta.resetFiles())
+    next = tk.Button(root,text= 'NEXT WORD',command=lambda:changeLabel(root,word,l))
     l.pack()
+
     b1.pack()
     b2.pack()
     b3.pack()
     b4.pack()
+    b5.pack()
+    next.pack()
     tk.mainloop()

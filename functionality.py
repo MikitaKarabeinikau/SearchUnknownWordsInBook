@@ -80,7 +80,7 @@ def get_words_from_book(book):
                     lastArr.append(words[i][x].lower())
         
         
-    print(f'len:{len(lastArr)}')
+    # print(f'len:{len(lastArr)}')
 
     wordsDict = {}
     for word in lastArr:
@@ -88,9 +88,9 @@ def get_words_from_book(book):
             wordsDict[word] += 1
         else:
             wordsDict[word] = 1
-    print(wordsDict)
-    print(len(wordsDict.keys()))
-    print(sorted(wordsDict.keys()))
+    # print(wordsDict)
+    # print(len(wordsDict.keys()))
+    # print(sorted(wordsDict.keys()))
     return sorted(wordsDict.keys())
     # print(get_vacabulary_list(BOOK_NAME))
     # print(find_file('words.txt', os.getcwd()))
@@ -103,7 +103,7 @@ def print_file(file):
 def delete_word_from_file(file, word_to_delete):
     with open(file,'r') as f:
         words = [word.strip() for word in f.readlines()]
-        print(words)
+        # print(words)
         while (word_to_delete in words): 
             words.remove(word_to_delete)
     with open(file,'w+') as f:
